@@ -4,7 +4,7 @@
 import AdminAuthGuard from "@/components/admin/AdminAuthGuard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Video, FolderKanban, ShieldAlert, Activity, SettingsIcon } from "lucide-react";
+import { Users, Video, FolderKanban, ShieldAlert, Activity, SettingsIcon, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 // Mock data for stats
