@@ -78,7 +78,7 @@ if (essentialConfigPresent) {
   if (app) {
     try {
       db = getFirestore(app);
-      authInstance = getAuth(app); // This line requires 'firebase/auth'
+      authInstance = getAuth(app); // This line requires 'firebase/auth' to be resolvable by the build system
       console.log("Firestore and Auth services initialized.");
     } catch (error) {
         console.error("Error initializing Firestore or Auth:", error);
@@ -97,7 +97,7 @@ if (essentialConfigPresent) {
 export { app, db, authInstance as auth };
 
 // Re-export auth operations and types for firebase-auth-operations.ts
-// These re-exports also depend on 'firebase/auth' being resolved correctly.
+// These re-exports also depend on 'firebase/auth' being resolvable by the build system.
 export {
   firebaseOpCreateUserWithEmailAndPassword,
   firebaseOpSignInWithEmailAndPassword,
