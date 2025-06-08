@@ -4,19 +4,22 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
 
-// !! IMPORTANT: TROUBLESHOOTING 'Module not found: Can't resolve 'firebase/auth'' !!
-// If you are seeing this error, it almost always means:
-// 1. The 'firebase' package is not correctly installed or is corrupted in your 'node_modules' folder.
-// 2. Next.js's build cache (in the '.next' folder) is stale.
+// !! VERY IMPORTANT: IF YOU ARE STILL SEEING "Module not found: Can't resolve 'firebase/auth'" !!
+// This error almost always means your project's environment is the issue.
+// The 'firebase' package might not be correctly installed or is corrupted in your 'node_modules' folder,
+// or Next.js's build cache (in the '.next' folder) is stale.
 //
-// TO FIX THIS, YOU **MUST** MANUALLY PERFORM THESE STEPS:
-//   a. Stop your Next.js development server.
-//   b. Delete your 'node_modules' folder.
-//   c. Delete your 'package-lock.json' (or 'yarn.lock' / 'pnpm-lock.yaml').
-//   d. Delete the '.next' folder (this is Next.js's build cache).
-//   e. Run 'npm install' (or 'yarn install' / 'pnpm install') to reinstall dependencies cleanly.
-//   f. Restart your development server (e.g., 'npm run dev').
-// This process resolves most 'module not found' issues for installed packages.
+// YOU **MUST** MANUALLY PERFORM THESE STEPS CAREFULLY TO FIX THIS:
+//   1. Stop your Next.js development server (e.g., Ctrl+C in the terminal).
+//   2. Delete your 'node_modules' folder.
+//   3. Delete your 'package-lock.json' (or 'yarn.lock' / 'pnpm-lock.yaml').
+//   4. Delete the '.next' folder (this is Next.js's build cache).
+//   5. Run 'npm install' (or 'yarn install' / 'pnpm install') in your terminal to reinstall all dependencies cleanly.
+//   6. Restart your development server (e.g., 'npm run dev').
+//
+// This process resolves the vast majority of 'module not found' issues for installed packages.
+// If the error persists after these steps, also try running 'next dev' (without --turbopack)
+// to see if it's a Turbopack-specific issue.
 import {
   getAuth,
   type Auth,
@@ -61,15 +64,28 @@ const essentialConfigPresent =
 if (essentialConfigPresent) {
   console.log("Essential Firebase config (API Key, Auth Domain, Project ID) detected. Initializing Firebase...");
   if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-    console.log("Firebase app initialized successfully.");
+    try {
+      app = initializeApp(firebaseConfig);
+      console.log("Firebase app initialized successfully.");
+    } catch (error) {
+      console.error("Error initializing Firebase app:", error);
+    }
   } else {
     app = getApp();
     console.log("Using existing Firebase app instance.");
   }
-  db = getFirestore(app);
-  authInstance = getAuth(app);
-  console.log("Firestore and Auth services initialized.");
+
+  if (app) {
+    try {
+      db = getFirestore(app);
+      authInstance = getAuth(app); // This line requires 'firebase/auth'
+      console.log("Firestore and Auth services initialized.");
+    } catch (error) {
+        console.error("Error initializing Firestore or Auth:", error);
+        db = null;
+        authInstance = null;
+    }
+  }
 } else {
   console.warn(
     "CRITICAL ERROR: Essential Firebase configuration (API Key, Auth Domain, Project ID) is MISSING. " +
@@ -81,6 +97,7 @@ if (essentialConfigPresent) {
 export { app, db, authInstance as auth };
 
 // Re-export auth operations and types for firebase-auth-operations.ts
+// These re-exports also depend on 'firebase/auth' being resolved correctly.
 export {
   firebaseOpCreateUserWithEmailAndPassword,
   firebaseOpSignInWithEmailAndPassword,
@@ -88,4 +105,3 @@ export {
   firebaseOpUpdateProfile,
 };
 export type { FirebaseUserCredentialType, FirebaseUserType, Auth as FirebaseAuthInstanceExportType };
-
