@@ -68,7 +68,7 @@ function AdminDashboardPageContent() {
           <CardHeader>
             <CardTitle className="font-headline">Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+          <CardContent className="flex flex-col gap-2 sm:flex-row sm:gap-4 sm:flex-wrap">
             <Button asChild variant="outline">
               <Link href="/admin/users" prefetch={false}><Users className="mr-2 h-4 w-4" />Manage Users</Link>
             </Button>
