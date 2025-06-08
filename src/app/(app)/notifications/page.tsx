@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BellRing, UserPlus, Heart, MessageCircle } from "lucide-react";
+import { BellRing, UserPlus, Heart, MessageCircle, Users } from "lucide-react";
 import Link from "next/link";
 
 const notifications = [
