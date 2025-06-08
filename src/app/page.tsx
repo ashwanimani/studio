@@ -15,12 +15,7 @@ export default function LandingPage() {
         </Link>
         <h1 className="ml-3 text-2xl font-headline font-bold text-primary">ChirpChat</h1>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/login" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Login
-          </Link>
-          <Button asChild>
-            <Link href="/signup" prefetch={false}>Sign Up</Link>
-          </Button>
+          {/* Links to login/signup removed as Firebase is removed */}
         </nav>
       </header>
       <main className="flex-1">
@@ -38,7 +33,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Link href="/signup" prefetch={false}>
+                    <Link href="/feed" prefetch={false}>
                       Get Started
                     </Link>
                   </Button>
