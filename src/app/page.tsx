@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageCircle, PlaySquare, Users } from "lucide-react";
@@ -14,11 +15,11 @@ export default function LandingPage() {
         </Link>
         <h1 className="ml-3 text-2xl font-headline font-bold text-primary">ChirpChat</h1>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/auth/login" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
+          <Link href="/login" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
             Login
           </Link>
           <Button asChild>
-            <Link href="/auth/signup" prefetch={false}>Sign Up</Link>
+            <Link href="/signup" prefetch={false}>Sign Up</Link>
           </Button>
         </nav>
       </header>
@@ -37,7 +38,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Link href="/auth/signup" prefetch={false}>
+                    <Link href="/signup" prefetch={false}>
                       Get Started
                     </Link>
                   </Button>
