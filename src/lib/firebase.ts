@@ -1,8 +1,17 @@
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
-import { getAuth, type Auth } from "firebase/auth";
-// import { getStorage, type FirebaseStorage } from "firebase/storage";
+// Centralize all direct imports from 'firebase/auth' here
+import {
+  getAuth,
+  type Auth,
+  createUserWithEmailAndPassword as firebaseOpCreateUserWithEmailAndPassword,
+  signInWithEmailAndPassword as firebaseOpSignInWithEmailAndPassword,
+  signOut as firebaseOpSignOut,
+  updateProfile as firebaseOpUpdateProfile,
+  type UserCredential as FirebaseUserCredentialType,
+  type User as FirebaseUserType
+} from "firebase/auth";
 
 // Firebase configuration sourced from environment variables
 const firebaseConfig = {
@@ -27,10 +36,8 @@ console.log("NEXT_PUBLIC_FIREBASE_APP_ID:", process.env.NEXT_PUBLIC_FIREBASE_APP
 
 let app: FirebaseApp | undefined = undefined;
 let db: Firestore | null = null;
-let auth: Auth | null = null;
-// let storage: FirebaseStorage | null = null;
+let authInstance: Auth | null = null;
 
-// Check if essential configuration variables are present
 const essentialConfigPresent =
   firebaseConfig.apiKey &&
   firebaseConfig.authDomain &&
@@ -38,21 +45,17 @@ const essentialConfigPresent =
 
 if (essentialConfigPresent) {
   console.log("Essential Firebase config (API Key, Auth Domain, Project ID) detected. Initializing Firebase...");
-  // Initialize Firebase only if it hasn't been initialized yet
   if (!getApps().length) {
     app = initializeApp(firebaseConfig);
     console.log("Firebase app initialized successfully.");
   } else {
-    app = getApp(); // Use the existing app instance
+    app = getApp();
     console.log("Using existing Firebase app instance.");
   }
-  // Initialize Firestore and other services if the app was successfully initialized
   db = getFirestore(app);
-  auth = getAuth(app); // Firebase Authentication is now initialized
-  // storage = getStorage(app); // Uncomment if you need Firebase Storage
+  authInstance = getAuth(app);
   console.log("Firestore and Auth services initialized.");
 } else {
-  // Log a warning if essential Firebase config is missing.
   console.warn(
     "CRITICAL ERROR: Essential Firebase configuration (API Key, Auth Domain, Project ID) is MISSING. " +
     "Firebase services will NOT be initialized. Please ensure these environment variables are correctly set: " +
@@ -60,4 +63,13 @@ if (essentialConfigPresent) {
   );
 }
 
-export { app, db, auth /*, storage */ };
+export { app, db, authInstance as auth };
+
+// Re-export auth operations and types for firebase-auth-operations.ts
+export {
+  firebaseOpCreateUserWithEmailAndPassword,
+  firebaseOpSignInWithEmailAndPassword,
+  firebaseOpSignOut,
+  firebaseOpUpdateProfile,
+};
+export type { FirebaseUserCredentialType, FirebaseUserType, Auth as FirebaseAuthInstanceExportType };
