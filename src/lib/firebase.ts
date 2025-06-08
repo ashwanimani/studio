@@ -15,6 +15,16 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID, // Optional: for Firebase Analytics
 };
 
+// Detailed logging for debugging environment variable loading
+console.log("Attempting to load Firebase config from environment variables:");
+console.log("NEXT_PUBLIC_FIREBASE_API_KEY:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? "Loaded" : "MISSING or UNDEFINED");
+console.log("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:", process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ? "Loaded" : "MISSING or UNDEFINED");
+console.log("NEXT_PUBLIC_FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ? "Loaded" : "MISSING or UNDEFINED");
+console.log("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ? "Loaded" : "MISSING or UNDEFINED");
+console.log("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:", process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ? "Loaded" : "MISSING or UNDEFINED");
+console.log("NEXT_PUBLIC_FIREBASE_APP_ID:", process.env.NEXT_PUBLIC_FIREBASE_APP_ID ? "Loaded" : "MISSING or UNDEFINED");
+
+
 let app: FirebaseApp | undefined = undefined;
 let db: Firestore | null = null;
 let auth: Auth | null = null;
@@ -27,23 +37,26 @@ const essentialConfigPresent =
   firebaseConfig.projectId;
 
 if (essentialConfigPresent) {
+  console.log("Essential Firebase config (API Key, Auth Domain, Project ID) detected. Initializing Firebase...");
   // Initialize Firebase only if it hasn't been initialized yet
   if (!getApps().length) {
     app = initializeApp(firebaseConfig);
+    console.log("Firebase app initialized successfully.");
   } else {
     app = getApp(); // Use the existing app instance
+    console.log("Using existing Firebase app instance.");
   }
   // Initialize Firestore and other services if the app was successfully initialized
   db = getFirestore(app);
   auth = getAuth(app); // Firebase Authentication is now initialized
   // storage = getStorage(app); // Uncomment if you need Firebase Storage
+  console.log("Firestore and Auth services initialized.");
 } else {
   // Log a warning if essential Firebase config is missing.
-  // This helps developers ensure their .env.local is set up correctly.
   console.warn(
-    "Essential Firebase configuration (API Key, Auth Domain, Project ID) is missing. " +
-    "Please set NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, and NEXT_PUBLIC_FIREBASE_PROJECT_ID " +
-    "in your .env.local file. Firebase services will be disabled until configured."
+    "CRITICAL ERROR: Essential Firebase configuration (API Key, Auth Domain, Project ID) is MISSING. " +
+    "Firebase services will NOT be initialized. Please ensure these environment variables are correctly set: " +
+    "NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, NEXT_PUBLIC_FIREBASE_PROJECT_ID."
   );
 }
 
