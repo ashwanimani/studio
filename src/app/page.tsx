@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, PlaySquare, Users } from "lucide-react";
+import { MessageCircle, PlaySquare, Users, LogIn } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,7 +15,12 @@ export default function LandingPage() {
         </Link>
         <h1 className="ml-3 text-2xl font-headline font-bold text-primary">ChirpChat</h1>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          {/* Links to login/signup removed as Firebase is removed */}
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/admin/login" prefetch={false}>
+              <LogIn className="mr-2 h-4 w-4" />
+              Admin Login
+            </Link>
+          </Button>
         </nav>
       </header>
       <main className="flex-1">
