@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bell, MessageCircle, Search } from 'lucide-react';
+import { Bell, MessageCircle, Search, LogIn } from 'lucide-react';
 
 export default function AppHeader() {
   return (
@@ -32,7 +32,12 @@ export default function AppHeader() {
             <span className="sr-only">Notifications</span>
           </Link>
         </Button>
-        {/* User profile dropdown removed as Firebase Auth is removed */}
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/admin/login" prefetch={false}>
+            <LogIn className="mr-2 h-4 w-4" />
+            Admin Login
+          </Link>
+        </Button>
       </div>
     </header>
   );
