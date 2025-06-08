@@ -31,7 +31,7 @@ export default function AdminSidebar() {
 
   const handleLogout = () => {
     localStorage.removeItem("isAdminLoggedIn");
-    router.push("/admin/login");
+    router.push("/"); // Redirect to the main home page
   };
 
   return (
