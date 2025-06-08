@@ -1,6 +1,7 @@
+
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
-// import { getAuth, type Auth } from "firebase/auth";
+import { getAuth, type Auth } from "firebase/auth";
 // import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 // Firebase configuration sourced from environment variables
@@ -16,7 +17,7 @@ const firebaseConfig = {
 
 let app: FirebaseApp | undefined = undefined;
 let db: Firestore | null = null;
-// let auth: Auth | null = null;
+let auth: Auth | null = null;
 // let storage: FirebaseStorage | null = null;
 
 // Check if essential configuration variables are present
@@ -34,7 +35,7 @@ if (essentialConfigPresent) {
   }
   // Initialize Firestore and other services if the app was successfully initialized
   db = getFirestore(app);
-  // auth = getAuth(app); // Uncomment if you need Firebase Authentication
+  auth = getAuth(app); // Firebase Authentication is now initialized
   // storage = getStorage(app); // Uncomment if you need Firebase Storage
 } else {
   // Log a warning if essential Firebase config is missing.
@@ -46,4 +47,4 @@ if (essentialConfigPresent) {
   );
 }
 
-export { app, db /*, auth, storage */ };
+export { app, db, auth /*, storage */ };
